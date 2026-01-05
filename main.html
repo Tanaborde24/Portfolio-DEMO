@@ -3,38 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> _TANABORDE_Portfolio_ </title>
+    <title>_TANABORDE_Portfolio_</title>
     
     <style>
-        /* การตั้งค่าพื้นฐาน */
+        /* --- 1. Global Styles --- */
         body {
             margin: 0;
-            font-family: 'Arial', sans-serif;
-            color: rgb(0, 0, 0); /* ตั้งค่าสีตัวอักษรพื้นฐานเป็นสีขาว */
-            background-color: #0c0c1e; /* สีพื้นหลังโดยรวม */
-            scroll-behavior: smooth; /* สำคัญสำหรับ Smooth Scrolling */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+            background-color: #0c0c1e;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
         }
 
-        /* --- Navigation Bar --- */
+        /* --- 2. Navigation Bar --- */
         .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 15px 50px;
-            position: fixed; /* เปลี่ยนเป็น fixed เพื่อให้เมนูติดอยู่ด้านบนเสมอ */
+            position: fixed;
             width: 100%;
             top: 0;
             left: 0;
-            z-index: 100; /* ให้อยู่เหนือทุกสิ่ง */
+            z-index: 1000;
             box-sizing: border-box;
-            background-color: rgba(12, 12, 30, 0.9); /* มีพื้นหลังทึบเล็กน้อยเมื่อเลื่อนลงมา */
+            background-color: rgba(12, 12, 30, 0.95);
+            backdrop-filter: blur(5px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .logo {
             font-weight: bold;
-            color: rgb(255, 255, 255);
-            font-size: 24px;
-            letter-spacing: 1px;
+            color: white;
+            font-size: 22px;
+            letter-spacing: 2px;
         }
 
         .navbar ul {
@@ -45,283 +48,350 @@
         }
 
         .navbar li a {
-            color: white;
+            color: rgba(255, 255, 255, 0.7);
             text-decoration: none;
             margin: 0 15px;
             font-size: 14px;
+            text-transform: uppercase;
+            transition: 0.3s;
             padding-bottom: 5px;
-            transition: border-bottom 0.3s;
         }
 
         .navbar li a:hover, .navbar li a.active {
-            border-bottom: 2px solid #e74c3c; /* สีขีดเส้นใต้ตามตัวอย่าง */
-        }
-        
-        .search-icon {
-            font-size: 18px;
-            cursor: pointer;
+            color: white;
+            border-bottom: 2px solid #e74c3c;
         }
 
-        /* --- Split Screen Hero Section --- */
+        /* --- 3. Hero Split Screen --- */
         .hero-section {
             display: flex;
-            height: 100vh; /* ความสูงเต็มจอ */
-            padding-top: 60px; /* ชดเชยความสูงของ Fixed Header */
-            box-sizing: border-box;
+            height: 100vh;
+            width: 100%;
         }
-        
-        /* ส่วนซ้าย: รูปภาพและสีแดงเข้ม */
+
+        /* ฝั่งซ้าย (พื้นหลังขาว) */
         .split-left {
-            flex: 1; /* กินพื้นที่ 50% */
-            background-color: #ffffff; /* สีแดงเข้มตามภาพตัวอย่าง */
+            flex: 1;
+            background-color: #ffffff;
             position: relative;
-            overflow: hidden;
             display: flex;
             align-items: flex-end;
+            color: #0c0c1e; /* ตัวอักษรสีเข้มเพราะพื้นหลังขาว */
         }
 
         .split-left img {
             position: absolute;
-            height: 100%;
+            top: 0;
+            left: 0;
             width: 100%;
+            height: 100%;
             object-fit: cover;
-            opacity: 0.8; 
+            opacity: 0.9;
             z-index: 1;
         }
 
         .split-left .headline-text {
             position: relative;
             z-index: 5;
-            padding: 0 50px 50px 50px;
+            padding: 0 50px 80px 50px;
+            background: linear-gradient(transparent, rgba(255,255,255,0.8));
+            width: 100%;
         }
 
-        /* ส่วนขวา: สีน้ำเงินเข้มและข้อความหลัก */
+        /* ฝั่งขวา (พื้นหลังน้ำเงินเข้ม) */
         .split-right {
-            flex: 1; /* กินพื้นที่ 50% */
-            background-color: #0c0c1e; /* สีน้ำเงินเข้ม/ดำ ตามภาพตัวอย่าง */
+            flex: 1;
+            background-color: #0c0c1e;
             display: flex;
             flex-direction: column;
             justify-content: center;
             padding: 0 50px;
         }
 
-        /* --- Typography (ตัวอักษร) --- */
         .hero-section h1 {
-            font-size: 7vw; /* ใช้ขนาดสัมพัทธ์กับหน้าจอ */
+            font-size: 6vw;
             margin: 0;
             font-weight: 900;
-            letter-spacing: 5px;
+            letter-spacing: -2px;
+            line-height: 1;
         }
 
-        .split-left .tagline {
-            font-size: 1.5vw;
-            font-weight: normal;
-            margin-bottom: -10px;
+        .split-left h1 { color: #0c0c1e; }
+        .split-right h1 { color: #ffffff; }
+
+        .tagline {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #e74c3c;
         }
 
-        .split-right .subtitle {
-            font-size: 1.2vw;
-            color: #ccc;
-            margin-top: 15px;
-            font-weight: 300;
+        .subtitle {
+            font-size: 1.2rem;
+            color: #888;
+            margin-top: 20px;
+            max-width: 400px;
+            line-height: 1.6;
         }
 
-        /* --- Call-to-Action Button --- */
         .cta-button {
             display: inline-block;
-            padding: 15px 30px;
-            background-color: transparent;
-            border: 2px solid white;
+            padding: 15px 35px;
+            border: 2px solid #e74c3c;
             color: white;
             text-decoration: none;
             font-weight: bold;
             margin-top: 30px;
-            transition: background-color 0.3s, color 0.3s;
+            width: fit-content;
+            transition: 0.3s;
         }
 
         .cta-button:hover {
-            background-color: white;
-            color: #0c0c1e;
+            background-color: #e74c3c;
         }
-        
-        /* --- Content Sections (สำหรับเว็บไซต์หน้าเดียว) --- */
+
+        /* --- 4. Content Sections --- */
         .content-section {
-            padding: 100px 50px;
-            min-height: 80vh;
-            background-color: #1a1a38;
+            padding: 120px 10% 80px 10%;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: #e74c3c;
+            margin: 15px auto;
+        }
+
+        /* --- 5. Education Cards Styles --- */
+        .education-container {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .education-card {
+            display: flex;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 15px;
+            transition: 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .education-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: #e74c3c;
+        }
+
+        .education-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(231, 76, 60, 0.5);
+        }
+
+        .edu-year {
+            flex: 0 0 180px;
+            font-size: 1.1rem;
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .edu-info h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.6rem;
             color: white;
         }
 
-        .content-section:nth-child(even) { /* ใช้สีพื้นหลังสลับกัน */
-            background-color: #0c0c1e;
+        .edu-info p {
+            margin: 5px 0;
+            color: #aaa;
+            font-size: 1.1rem;
         }
 
-        .content-section h2 {
-            font-size: 40px;
-            text-align: center;
-            margin-bottom: 60px;
-            border-bottom: 3px solid #e74c3c;
-            display: block; /* เปลี่ยนเป็น block เพื่อให้ขีดเส้นใต้เต็มความกว้าง */
-            width: fit-content;
-            margin-left: auto;
-            margin-right: auto;
-            padding-bottom: 10px;
+        .edu-info .school-name {
+            color: #eee;
+            font-weight: 500;
         }
-        
-        /* สไตล์ส่วนท้าย */
+
+        /* --- 6. Portfolio & Contact Placeholders --- */
+        .grid-placeholder {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .box {
+            height: 250px;
+            background: #1a1a38;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px dashed #444;
+        }
+
+        /* --- 7. Footer --- */
         footer {
             text-align: center;
-            padding: 30px 0;
-            background-color: #0c0c1e;
+            padding: 40px;
+            border-top: 1px solid #222;
+            color: #666;
             font-size: 14px;
-            color: #ccc;
-        }
-        
-        /* --- Responsive Design (เบื้องต้น) --- */
-        @media (max-width: 768px) {
-            .hero-section {
-                flex-direction: column; /* เปลี่ยนจากแบ่งข้างเป็นแบ่งบนล่างในมือถือ */
-                height: auto;
-                min-height: 100vh;
-            }
-            
-            .split-left, .split-right {
-                flex: 1;
-                min-height: 50vh;
-                padding: 30px;
-            }
-            
-            .hero-section h1 {
-                font-size: 12vw;
-            }
-            
-            .split-left .tagline, .split-right .subtitle {
-                font-size: 4vw;
-            }
-
-            .navbar {
-                padding: 15px 20px;
-            }
-
-            .navbar ul {
-                display: none; /* อาจซ่อนเมนูในมือถือแล้วใช้ Hamburger icon แทน */
-            }
         }
 
+        /* --- 8. Responsive Design --- */
+        @media (max-width: 992px) {
+            .hero-section { flex-direction: column; }
+            .split-left, .split-right { height: 50vh; padding: 40px; }
+            .hero-section h1 { font-size: 12vw; }
+            .navbar { padding: 15px 20px; }
+            .navbar ul { display: none; } /* ซ่อนเมนูในมือถือ */
+            .education-card { flex-direction: column; gap: 15px; }
+            .edu-year { flex: none; }
+        }
     </style>
 </head>
 <body>
 
     <header class="navbar">
-        <div class="logo"> TANABORDE_Portfolio</div>
+        <div class="logo">TANABORDE</div>
         <nav>
             <ul>
                 <li><a href="#home" class="active">Home</a></li>
-                <li><a href="#about">ประวัติการศึกษา</a></li>
-                <li><a href="#portfolio">Portfolio</a></li>
+                <li><a href="#about">Education</a></li>
+                <li><a href="#portfolio">experience</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
         </nav>
-        <div></div>
+        <div style="color: white; cursor: pointer;">🔍</div>
     </header>
 
     <main class="hero-section" id="home">
         <div class="split-left">
-            <img src="your-photo.jpg" alt="Developer Profile">
+            <img src="your-photo.jpg" alt="Profile Image">
             <div class="headline-text">
-                <p class="tagline"> TANABORDE MUANGNUM</p>
-                <h1>Program</h1>
+                <p class="tagline">TANABORDE MUANGNUM</p>
+                <h1>PROGRAM</h1>
             </div>
         </div>
 
         <div class="split-right">
             <h1>SOLUTIONS</h1>
-            <p class="subtitle">...</p>
+            <p class="subtitle">
+                มุ่งมั่นสร้างสรรค์ซอฟต์แวร์ที่มีประสิทธิภาพ 
+                ด้วยทักษะการเขียนโปรแกรมที่ครอบคลุมทั้งระบบ
+            </p>
             <a href="#portfolio" class="cta-button">VIEW MY WORKS</a>
         </div>
     </main>
 
-    <section id="about" class="content-section about-me">
-        <h2> ประวัติการศึกษา</h2>
-        <div class="about-content">
-            <p></p>
-            <h3></h3>
-            <ul>
-                
-            </ul>
-            <p style="margin-top: 30px;"></p>
+    <section id="about" class="content-section">
+        <h2 class="section-title">ประวัติการศึกษา</h2>
+        
+        <div class="education-container">
+            <div class="education-card">
+                <div class="edu-year">25XX - ปัจจุบัน</div>
+                <div class="edu-info">
+                    <h3>ระดับปริญญาตรี</h3>
+                    <p class="school-name">มหาวิทยาลัยชื่อมหาวิทยาลัยของคุณ</p>
+                    <p>คณะวิศวกรรมศาสตร์ สาขาวิทยาการคอมพิวเตอร์</p>
+                </div>
+            </div>
+
+            <div class="education-card">
+                <div class="edu-year">25XX - 25XX</div>
+                <div class="edu-info">
+                    <h3>ระดับมัธยมศึกษา</h3>
+                    <p class="school-name">โรงเรียนเตรียมอุดมศึกษาพัฒนาการสุวรรณภูมิ</p>
+                    <p>แผนการเรียน วิทยาศาสตร์ - คณิตศาสตร์ (GPAX: 3.77)</p>
+                </div>
+            </div>
+
+            <div class="education-card">
+                <div class="edu-year">25XX - 25XX</div>
+                <div class="edu-info">
+                    <h3>ระดับประถมศึกษา</h3>
+                    <p class="school-name">โรงเรียนเทพอักษร</p>
+                    <p>หลักสูตรการศึกษาขั้นพื้นฐาน</p>
+                </div>
+            </div>
         </div>
     </section>
 
-    <section id="portfolio" class="content-section portfolio-works">
-        <h2>🛠️ Selected Projects & Works</h2>
-        <p style="text-align: center;">(Placeholder: ใช้ส่วนนี้เพื่อแสดงภาพรวมของโปรเจกต์หลักของคุณ)</p>
-        </section>
+    <section id="portfolio" class="content-section">
+        <h2 class="section-title">Experience</h2>
+        <div class="grid-placeholder">
+            <div class="box">Project 1</div>
+            <div class="box">Project 2</div>
+            <div class="box">Project 3</div>
+        </div>
+    </section>
 
-    <section id="contact" class="content-section contact-info">
-        <h2>📬 Let's Connect</h2>
-        <p style="text-align: center;">(Placeholder: คุณสามารถเพิ่มแบบฟอร์มติดต่อ หรือข้อมูลติดต่อที่นี่)</p>
+    <section id="contact" class="content-section">
+        <h2 class="section-title">Contact Me</h2>
+        <div style="text-align: center; color: #aaa;">
+            <p>Email: 03616.tupp.ac.th</p>
+            <p>Tel: 097-140-5573</p>
+            <p>GitHub: https://github.com/BLACKSQUID24</p>
+        </div>
     </section>
 
     <footer>
-        <p>&copy; TANABORDE_Portfolio. </p>
+        <p>&copy; 2025 TANABORDE MUANGNUM | All Rights Reserved.</p>
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('Portfolio Website Loaded. Ready to code!');
+        // ระบบเปลี่ยนสถานะเมนู (Active Link) ตามการ Scroll
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section, main');
+            const navLinks = document.querySelectorAll('.navbar ul li a');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
 
-            // โค้ดสำหรับ Smooth Scrolling ไปยัง Section ต่างๆ
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    // ตรวจสอบว่าไม่ใช่การคลิก Home (ID: home) ซึ่งอยู่ที่ส่วน Hero
-                    const isHome = this.getAttribute('href') === '#home';
-                    
-                    e.preventDefault(); // หยุดการกระโดดทันที
-                    
-                    const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
+            navLinks.forEach(a => {
+                a.classList.remove('active');
+                if (a.getAttribute('href').includes(current)) {
+                    a.classList.add('active');
+                }
+            });
+        });
 
-                    if (targetElement) {
-                        // เลื่อนไปยังส่วนนั้นอย่างนุ่มนวล
-                        targetElement.scrollIntoView({
-                            behavior: 'smooth' 
-                        });
-                        
-                        // ถ้าคลิก Home อาจต้องเลื่อนไปที่ด้านบนสุดของหน้าจอจริงๆ
-                        if (isHome) {
-                             window.scrollTo({
-                                top: 0,
-                                behavior: 'smooth'
-                            });
-                        }
-                    }
+        // Smooth Scrolling สำหรับลิงก์เมนู
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
                 });
             });
-            
-            // โค้ดสำหรับ Active Menu (เพิ่ม class 'active' เมื่อเลื่อนไปถึง Section นั้นๆ)
-            const sections = document.querySelectorAll('.content-section, .hero-section');
-            const navLinks = document.querySelectorAll('.navbar nav ul li a');
-
-            window.addEventListener('scroll', () => {
-                let current = '';
-
-                sections.forEach(section => {
-                    const sectionTop = section.offsetTop - 70; // 70px ชดเชย Header
-                    if (window.scrollY >= sectionTop) {
-                        current = section.getAttribute('id');
-                    }
-                });
-
-                navLinks.forEach(a => {
-                    a.classList.remove('active');
-                    if (a.getAttribute('href').substring(1) === current) {
-                        a.classList.add('active');
-                    }
-                });
-            });
-            
         });
     </script>
+
 </body>
 </html>
