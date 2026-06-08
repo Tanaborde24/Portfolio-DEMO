@@ -871,115 +871,233 @@ button { cursor: pointer; font-family: inherit; }
 }
 
 /* --- 6. Education Timeline --- */
-.timeline {
+.timeline-container {
     position: relative;
-    padding-left: 40px;
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px 0;
+    overflow: visible;
 }
 
-.timeline::before {
+/* Alternating cards wrapper */
+.timeline-card-wrapper {
+    position: relative;
+    width: 50%;
+    padding: 20px 40px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: flex-end;
+    z-index: 2;
+}
+
+.timeline-card-wrapper.right {
+    left: 50%;
+    justify-content: flex-start;
+}
+
+/* Dots on the line */
+.timeline-card-dot {
+    position: absolute;
+    right: -10px; /* Overlaps central line for left-aligned cards */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--bg-primary);
+    border: 4px solid var(--accent);
+    box-shadow: 0 0 0 4px rgba(108, 99, 255, 0.15);
+    z-index: 10;
+    cursor: pointer;
+    transition: all var(--transition);
+}
+
+/* Inner dot element */
+.timeline-card-dot::after {
     content: '';
     position: absolute;
-    left: 14px;
-    top: 8px;
-    bottom: 8px;
-    width: 2px;
-    background: linear-gradient(to bottom, var(--accent), transparent);
-}
-
-.timeline-item {
-    position: relative;
-    margin-bottom: 40px;
-    display: flex;
-    gap: 0;
-}
-
-.timeline-item:last-child { margin-bottom: 0; }
-
-.timeline-marker {
-    position: absolute;
-    left: -40px;
-    top: 6px;
-}
-
-.timeline-dot {
-    width: 12px; height: 12px;
-    border-radius: var(--radius-full);
-    background: var(--bg-primary);
-    border: 3px solid var(--accent);
-    position: relative;
-    z-index: 2;
-    transition: background var(--transition);
-}
-
-.timeline-dot.current {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
     background: var(--accent);
-    box-shadow: 0 0 0 6px var(--accent-glow);
+    transition: all var(--transition);
 }
 
-.timeline-content {
+.timeline-card-wrapper.right .timeline-card-dot {
+    left: -10px; /* Overlaps central line for right-aligned cards */
+    right: auto;
+}
+
+/* Dot Hover / Active Effect */
+.timeline-card-dot:hover,
+.timeline-card-wrapper:hover .timeline-card-dot {
+    transform: translateY(-50%) scale(1.25);
+    box-shadow: 0 0 12px var(--accent);
+    border-color: var(--accent-hover);
+}
+
+.timeline-card-dot:hover::after,
+.timeline-card-wrapper:hover .timeline-card-dot::after {
+    background: var(--bg-primary);
+}
+
+/* Cards styling */
+.timeline-card {
     background: var(--bg-card);
     border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    padding: 28px 30px;
+    border-radius: var(--radius-lg);
+    padding: 24px;
     width: 100%;
+    max-width: 420px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
     transition: all var(--transition);
-    position: relative;
+    box-shadow: var(--shadow-sm);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
-.timeline-content:hover {
+.timeline-card-wrapper:hover .timeline-card {
     background: var(--bg-card-hover);
     border-color: var(--border-hover);
-    transform: translateX(6px);
+    transform: translateY(-4px);
     box-shadow: var(--shadow-md);
 }
 
-.timeline-badge {
-    display: inline-block;
-    background: var(--accent-gradient);
-    color: #fff;
-    font-size: 0.7rem;
-    font-weight: 700;
-    padding: 3px 12px;
-    border-radius: 20px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-bottom: 10px;
+/* Logo circle */
+.card-logo {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: #ffffff; /* White bg for school logos to pop */
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    padding: 10px;
+    transition: all var(--transition);
+    overflow: hidden; /* Ensure image fits perfectly inside border radius */
 }
 
-.timeline-year {
+.school-logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 50%;
+}
+
+[data-theme="dark"] .card-logo {
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.timeline-card-wrapper:hover .card-logo {
+    transform: scale(1.06) rotate(3deg);
+    box-shadow: 0 6px 16px rgba(108, 99, 255, 0.2);
+}
+
+/* Card Body */
+.card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    text-align: left;
+}
+
+.school-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.35;
+}
+
+.school-level {
     font-size: 0.85rem;
     font-weight: 600;
     color: var(--accent);
-    margin-bottom: 6px;
 }
 
-.timeline-content h3 {
-    font-size: 1.2rem;
-    font-weight: 700;
-    margin-bottom: 8px;
-    color: var(--text-primary);
+.badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
 }
 
-.timeline-school {
-    font-size: 0.95rem;
-    color: var(--text-primary);
-    font-weight: 500;
-    margin-bottom: 4px;
-}
-
-.timeline-detail {
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-}
-
-.timeline-gpa {
-    margin-top: 8px;
-    font-size: 0.9rem;
+/* Badge styling to match reference */
+.year-badge, .special-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    border: 1.5px solid rgba(108, 99, 255, 0.15);
+    background: rgba(108, 99, 255, 0.06);
     color: var(--accent);
 }
 
-.timeline-gpa strong {
-    font-size: 1.1rem;
+[data-theme="dark"] .year-badge,
+[data-theme="dark"] .special-badge {
+    background: rgba(108, 99, 255, 0.15);
+    border-color: rgba(108, 99, 255, 0.25);
+    color: #c7d2fe;
+}
+
+.special-class {
+    margin-top: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.special-class .label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+.gpax {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* Connection arrow SVG overlay */
+.timeline-arrow-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+    overflow: visible;
+}
+
+#timeline-arrow-path {
+    transition: stroke-dashoffset 0.1s linear, opacity 0.3s ease;
+    stroke: var(--accent);
+    stroke-width: 3.5;
+    stroke-dasharray: 8 5; /* Dashed connection path */
+    opacity: 0;
+}
+
+.timeline-arrow-svg.active #timeline-arrow-path {
+    opacity: 1;
+    animation: dashTimeline 1.2s linear infinite;
+}
+
+@keyframes dashTimeline {
+    to {
+        stroke-dashoffset: -26;
+    }
 }
 
 /* --- 7. Projects Section --- */
@@ -1426,8 +1544,25 @@ footer {
         grid-template-columns: 1fr;
     }
 
-    .timeline { padding-left: 30px; }
-    .timeline-marker { left: -30px; }
+    /* Responsive timeline */
+    .timeline-card-wrapper {
+        width: 100%;
+        padding: 15px 15px 15px 45px;
+        justify-content: flex-start;
+    }
+
+    .timeline-card-wrapper.right {
+        left: 0;
+    }
+
+    .timeline-card-dot {
+        left: 10px !important;
+        right: auto !important;
+    }
+
+    .timeline-card {
+        max-width: 100%;
+    }
 
     .contact-grid {
         grid-template-columns: 1fr;

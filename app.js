@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Animate elements on scroll (IntersectionObserver)
     function setupScrollAnimations() {
         const animTargets = document.querySelectorAll(
-            '.skill-card, .soft-skill-card, .language-card, .timeline-item, .project-card, .contact-card'
+            '.skill-card, .soft-skill-card, .language-card, .timeline-card, .project-card, .contact-card'
         );
 
         animTargets.forEach(el => el.classList.add('animate-on-scroll'));
@@ -616,7 +616,85 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // ============ 9. HERO PHOTO FALLBACK ============
+    // ============ 9. INTERACTIVE TIMELINE ARROW ============
+    const timelineContainer = document.querySelector('.timeline-container');
+    if (timelineContainer) {
+        const dots = document.querySelectorAll('.timeline-card-dot');
+        const wrappers = document.querySelectorAll('.timeline-card-wrapper');
+        const arrowSvg = document.getElementById('timelineArrowSvg');
+        const arrowPath = document.getElementById('timeline-arrow-path');
+
+        function getCenterX() {
+            const isMobile = window.innerWidth <= 900;
+            if (isMobile) {
+                const dot = dots[0];
+                const wrapper = dot ? dot.closest('.timeline-card-wrapper') : null;
+                if (dot && wrapper) {
+                    return dot.offsetLeft + wrapper.offsetLeft + dot.offsetWidth / 2;
+                }
+                return 20;
+            }
+            return timelineContainer.offsetWidth / 2;
+        }
+
+        function getDotCoords(index) {
+            if (index < 0 || index >= dots.length) return null;
+            const dot = dots[index];
+            const wrapper = dot.closest('.timeline-card-wrapper');
+            if (!dot || !wrapper) return null;
+
+            const x = getCenterX();
+            const y = dot.offsetTop + wrapper.offsetTop + dot.offsetHeight / 2;
+            return { x, y };
+        }
+
+        function drawArrow(index) {
+            // Last block does not need an arrow
+            if (index >= dots.length - 1) {
+                hideArrow();
+                return;
+            }
+
+            const start = getDotCoords(index);
+            const end = getDotCoords(index + 1);
+            if (!start || !end) return;
+
+            // Offset start.y and end.y so the line starts exactly below the first dot
+            // and ends exactly at the top edge of the next dot.
+            const startY = start.y + 10;
+            const endY = end.y - 10;
+
+            // Straight vertical line along the timeline center line
+            const pathD = `M ${start.x} ${startY} L ${start.x} ${endY}`;
+
+            arrowPath.setAttribute('d', pathD);
+            arrowSvg.classList.add('active');
+        }
+
+        function hideArrow() {
+            arrowSvg.classList.remove('active');
+        }
+
+        wrappers.forEach((wrapper, index) => {
+            wrapper.addEventListener('mouseenter', () => drawArrow(index));
+            wrapper.addEventListener('mouseleave', hideArrow);
+
+            // Handle touch for mobile devices
+            wrapper.addEventListener('touchstart', () => {
+                drawArrow(index);
+            }, { passive: true });
+        });
+
+        // Hide arrow when tapping anywhere else
+        document.addEventListener('touchstart', (e) => {
+            if (!timelineContainer.contains(e.target)) {
+                hideArrow();
+            }
+        }, { passive: true });
+    }
+
+
+    // ============ 10. HERO PHOTO FALLBACK ============
     const heroPhoto = document.getElementById('heroPhoto');
     if (heroPhoto) {
         heroPhoto.addEventListener('error', () => {
