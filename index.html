@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TANABORDE MUANGNUM | Student Portfolio</title>
+    <meta name="description" content="แฟ้มสะสมผลงานออนไลน์ของ ธนบดี เมืองนุ่ม - นักเรียนสายวิทย์-คณิต โรงเรียนเตรียมอุดมศึกษาพัฒนาการสุวรรณภูมิ">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+Thai:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ====== NAVIGATION BAR ====== -->
+    <header class="navbar" id="navbar">
+        <a href="#home" class="logo">TANABORDE</a>
+        <nav>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home" class="active">Home</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#education">Education</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="nav-actions">
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark/Light Mode">
+                <span class="theme-icon" id="themeIcon">🌙</span>
+            </button>
+            <button class="hamburger" id="hamburger" aria-label="Toggle Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- ====== SECTION 1: HERO / ABOUT ME ====== -->
+    <section class="hero-section" id="home">
+        <div class="hero-bg-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-photo-wrapper">
+                <div class="hero-photo-ring">
+                    <img src="images/profile.jpg" alt="TANABORDE MUANGNUM" class="hero-photo" id="heroPhoto">
+                </div>
+                <div class="hero-photo-decoration"></div>
+            </div>
+            <div class="hero-text">
+                <p class="hero-greeting animate-item">สวัสดีครับ ผมคือ</p>
+                <h1 class="hero-name animate-item">
+                    <span class="name-first">TANABORDE</span>
+                    <span class="name-last">MUANGNUM</span>
+                </h1>
+                <p class="hero-subtitle animate-item">ธนบดี ม่วงนุ่ม</p>
+                <div class="hero-info animate-item">
+                    <div class="hero-info-item">
+                        <span class="info-icon">🏫</span>
+                        <span>โรงเรียนเตรียมอุดมศึกษาพัฒนาการสุวรรณภูมิ</span>
+                    </div>
+                    <div class="hero-info-item">
+                        <span class="info-icon">📚</span>
+                        <span>แผนการเรียน วิทยาศาสตร์ - คณิตศาสตร์</span>
+                    </div>
+                </div>
+                <blockquote class="hero-quote animate-item">
+                    <span class="quote-mark">"</span>
+                    มุ่งมั่นสร้างสรรค์ซอฟต์แวร์ที่มีประสิทธิภาพ ด้วยทักษะการเขียนโปรแกรมที่ครอบคลุมทั้งระบบ
+                    <span class="quote-mark">"</span>
+                </blockquote>
+                <div class="hero-cta animate-item">
+                    <a href="#projects" class="btn btn-primary">ดูผลงานของผม</a>
+                    <a href="#contact" class="btn btn-outline">ติดต่อ</a>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <div class="mouse">
+                <div class="mouse-wheel"></div>
+            </div>
+            <span>เลื่อนลง</span>
+        </div>
+    </section>
+
+    <!-- ====== SECTION 2: SKILLS ====== -->
+    <section class="content-section" id="skills">
+        <div class="section-container">
+            <h2 class="section-title">
+                <span class="title-accent">02.</span>
+                ทักษะและความเชี่ยวชาญ
+                <span class="title-en">Skills & Expertise</span>
+            </h2>
+
+            <!-- Hard Skills -->
+            <div class="skills-category">
+                <h3 class="category-title">
+                    <span class="category-icon">💻</span> Hard Skills
+                </h3>
+                <div class="skills-grid">
+                    <div class="skill-card">
+                        <div class="skill-icon-wrapper"><span class="skill-emoji">🐍</span></div>
+                        <h4>Python</h4>
+                        <div class="progress-bar"><div class="progress-fill" data-width="85"></div></div>
+                        <span class="skill-level">85%</span>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-icon-wrapper"><span class="skill-emoji">🌐</span></div>
+                        <h4>HTML / CSS</h4>
+                        <div class="progress-bar"><div class="progress-fill" data-width="80"></div></div>
+                        <span class="skill-level">80%</span>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-icon-wrapper"><span class="skill-emoji">⚡</span></div>
+                        <h4>JavaScript</h4>
+                        <div class="progress-bar"><div class="progress-fill" data-width="70"></div></div>
+                        <span class="skill-level">70%</span>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-icon-wrapper"><span class="skill-emoji">🎮</span></div>
+                        <h4>Game Development</h4>
+                        <div class="progress-bar"><div class="progress-fill" data-width="75"></div></div>
+                        <span class="skill-level">75%</span>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-icon-wrapper"><span class="skill-emoji">🔥</span></div>
+                        <h4>Firebase</h4>
+                        <div class="progress-bar"><div class="progress-fill" data-width="65"></div></div>
+                        <span class="skill-level">65%</span>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-icon-wrapper"><span class="skill-emoji">🗄️</span></div>
+                        <h4>Database / SQL</h4>
+                        <div class="progress-bar"><div class="progress-fill" data-width="60"></div></div>
+                        <span class="skill-level">60%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Soft Skills -->
+            <div class="skills-category">
+                <h3 class="category-title">
+                    <span class="category-icon">🧠</span> Soft Skills
+                </h3>
+                <div class="skills-grid soft-skills-grid">
+                    <div class="soft-skill-card">
+                        <span class="soft-icon">🤝</span>
+                        <h4>การทำงานเป็นทีม</h4>
+                        <p>ร่วมงานกับผู้อื่นได้ดี สื่อสารชัดเจน</p>
+                    </div>
+                    <div class="soft-skill-card">
+                        <span class="soft-icon">💡</span>
+                        <h4>ความคิดสร้างสรรค์</h4>
+                        <p>คิดนอกกรอบ หาทางแก้ปัญหาใหม่ๆ</p>
+                    </div>
+                    <div class="soft-skill-card">
+                        <span class="soft-icon">⏰</span>
+                        <h4>การบริหารเวลา</h4>
+                        <p>จัดลำดับความสำคัญ ส่งงานตรงเวลา</p>
+                    </div>
+                    <div class="soft-skill-card">
+                        <span class="soft-icon">🔍</span>
+                        <h4>การแก้ปัญหา</h4>
+                        <p>วิเคราะห์อย่างเป็นระบบ หาทางออกที่ดีที่สุด</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Languages -->
+            <div class="skills-category">
+                <h3 class="category-title">
+                    <span class="category-icon">🌍</span> ภาษา (Languages)
+                </h3>
+                <div class="languages-grid">
+                    <div class="language-card">
+                        <div class="lang-flag">🇹🇭</div>
+                        <h4>ภาษาไทย</h4>
+                        <div class="lang-dots">
+                            <span class="dot filled"></span>
+                            <span class="dot filled"></span>
+                            <span class="dot filled"></span>
+                            <span class="dot filled"></span>
+                            <span class="dot filled"></span>
+                        </div>
+                        <span class="lang-level">ภาษาแม่</span>
+                    </div>
+                    <div class="language-card">
+                        <div class="lang-flag">🇬🇧</div>
+                        <h4>English</h4>
+                        <div class="lang-dots">
+                            <span class="dot filled"></span>
+                            <span class="dot filled"></span>
+                            <span class="dot filled"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                        </div>
+                        <span class="lang-level">ระดับกลาง</span>
+                    </div>
+                    <div class="language-card">
+                        <div class="lang-flag">🇯🇵</div>
+                        <h4>日本語</h4>
+                        <div class="lang-dots">
+                            <span class="dot filled"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                        </div>
+                        <span class="lang-level">เริ่มต้น</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== SECTION 3: EDUCATION ====== -->
+    <section class="content-section" id="education">
+        <div class="section-container">
+            <h2 class="section-title">
+                <span class="title-accent">03.</span>
+                ประวัติการศึกษา
+                <span class="title-en">Education</span>
+            </h2>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-marker">
+                        <div class="timeline-dot current"></div>
+                    </div>
+                    <div class="timeline-content">
+                        <span class="timeline-badge">ปัจจุบัน</span>
+                        <div class="timeline-year">2566 - ปัจจุบัน</div>
+                        <h3>ระดับมัธยมศึกษาตอนปลาย</h3>
+                        <p class="timeline-school">โรงเรียนเตรียมอุดมศึกษาพัฒนาการสุวรรณภูมิ</p>
+                        <p class="timeline-detail">แผนการเรียน วิทยาศาสตร์ - คณิตศาสตร์</p>
+                        <p class="timeline-gpa">GPAX: <strong>3.77</strong></p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker">
+                        <div class="timeline-dot"></div>
+                    </div>
+                    <div class="timeline-content">
+                        <div class="timeline-year">2563 - 2566</div>
+                        <h3>ระดับมัธยมศึกษาตอนต้น</h3>
+                        <p class="timeline-school">โรงเรียนเตรียมอุดมศึกษาพัฒนาการสุวรรณภูมิ</p>
+                        <p class="timeline-detail">หลักสูตรการศึกษาขั้นพื้นฐาน</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker">
+                        <div class="timeline-dot"></div>
+                    </div>
+                    <div class="timeline-content">
+                        <div class="timeline-year">2557 - 2563</div>
+                        <h3>ระดับประถมศึกษา</h3>
+                        <p class="timeline-school">โรงเรียนเทพอักษร</p>
+                        <p class="timeline-detail">หลักสูตรการศึกษาขั้นพื้นฐาน</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== SECTION 4: PROJECTS ====== -->
+    <section class="content-section" id="projects">
+        <div class="section-container">
+            <h2 class="section-title">
+                <span class="title-accent">04.</span>
+                ผลงาน
+                <span class="title-en">Projects & Gallery</span>
+            </h2>
+
+            <!-- Admin Add Button (hidden by default) -->
+            <div class="admin-controls" id="adminControls" style="display: none;">
+                <button class="btn btn-primary add-project-btn" id="addProjectBtn">
+                    <span>➕</span> เพิ่มผลงานใหม่
+                </button>
+                <button class="btn btn-outline logout-btn" id="logoutBtn">
+                    <span>🚪</span> ออกจากระบบ
+                </button>
+            </div>
+
+            <!-- Project Cards Grid -->
+            <div class="projects-grid" id="projectsGrid">
+                <!-- Firebase projects will be loaded here -->
+                <div class="loading-projects" id="loadingProjects">
+                    <div class="spinner"></div>
+                    <p>กำลังโหลดผลงาน...</p>
+                </div>
+            </div>
+
+            <!-- Fallback static projects (shown if Firebase is not configured) -->
+            <div class="projects-grid static-projects" id="staticProjects" style="display: none;">
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="images/ผลงาน/GameJamX.png" alt="Game Jam X">
+                        <div class="project-overlay">
+                            <span class="overlay-icon">🔍</span>
+                        </div>
+                    </div>
+                    <div class="project-info">
+                        <h3>Game Jam X</h3>
+                        <p>ผลงานเกมจากการแข่งขัน Game Jam</p>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="images/ผลงาน/GYIIF.jpg" alt="GYIIF">
+                        <div class="project-overlay">
+                            <span class="overlay-icon">🔍</span>
+                        </div>
+                    </div>
+                    <div class="project-info">
+                        <h3>GYIIF</h3>
+                        <p>โปรเจกต์นวัตกรรมเยาวชน</p>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="images/ผลงาน/Starway 4.png" alt="Starway 4">
+                        <div class="project-overlay">
+                            <span class="overlay-icon">🔍</span>
+                        </div>
+                    </div>
+                    <div class="project-info">
+                        <h3>Starway 4</h3>
+                        <p>เกมสไตล์ Arcade ที่พัฒนาด้วยตัวเอง</p>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="images/ผลงาน/HH GJI.png" alt="HH Game Jam">
+                        <div class="project-overlay">
+                            <span class="overlay-icon">🔍</span>
+                        </div>
+                    </div>
+                    <div class="project-info">
+                        <h3>HH Game Jam</h3>
+                        <p>ผลงานจากการแข่งขัน Hackathon</p>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="images/ผลงาน/HH Port (69)-70.jpg" alt="Portfolio Project">
+                        <div class="project-overlay">
+                            <span class="overlay-icon">🔍</span>
+                        </div>
+                    </div>
+                    <div class="project-info">
+                        <h3>Portfolio Project</h3>
+                        <p>โปรเจกต์พัฒนาเว็บไซต์แฟ้มสะสมผลงาน</p>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="images/ผลงาน/งาน มศว.jpg" alt="งาน มศว">
+                        <div class="project-overlay">
+                            <span class="overlay-icon">🔍</span>
+                        </div>
+                    </div>
+                    <div class="project-info">
+                        <h3>งาน มศว</h3>
+                        <p>ผลงานที่ส่งเข้าร่วมกิจกรรมมหาวิทยาลัย</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== CONTACT SECTION ====== -->
+    <section class="content-section contact-section" id="contact">
+        <div class="section-container">
+            <h2 class="section-title">
+                <span class="title-accent">05.</span>
+                ติดต่อ
+                <span class="title-en">Contact</span>
+            </h2>
+            <div class="contact-grid">
+                <a href="mailto:03616@tupp.ac.th" class="contact-card">
+                    <span class="contact-icon">📧</span>
+                    <h4>Email</h4>
+                    <p>03616@tupp.ac.th</p>
+                </a>
+                <a href="tel:0971405573" class="contact-card">
+                    <span class="contact-icon">📱</span>
+                    <h4>โทรศัพท์</h4>
+                    <p>097-140-5573</p>
+                </a>
+                <a href="https://github.com/BLACKSQUID24" target="_blank" rel="noopener noreferrer" class="contact-card">
+                    <span class="contact-icon">🐙</span>
+                    <h4>GitHub</h4>
+                    <p>BLACKSQUID24</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== FOOTER ====== -->
+    <footer>
+        <p>&copy; 2025 TANABORDE MUANGNUM | All Rights Reserved.</p>
+        <!-- Secret Admin Login Button -->
+        <button class="secret-admin-btn" id="secretAdminBtn" title="Admin Login">⚙️</button>
+    </footer>
+
+    <!-- ====== ADD PROJECT MODAL ====== -->
+    <div class="modal-overlay" id="projectModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <h2>เพิ่มผลงานใหม่</h2>
+            <form id="projectForm">
+                <div class="form-group">
+                    <label for="projectName">ชื่อผลงาน</label>
+                    <input type="text" id="projectName" placeholder="กรอกชื่อผลงาน..." required>
+                </div>
+                <div class="form-group">
+                    <label for="projectDesc">คำอธิบาย</label>
+                    <textarea id="projectDesc" rows="3" placeholder="อธิบายรายละเอียดผลงาน..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="projectImage">รูปภาพผลงาน</label>
+                    <div class="file-upload-wrapper">
+                        <input type="file" id="projectImage" accept="image/*" required>
+                        <div class="file-upload-label" id="fileLabel">
+                            <span>📁</span> เลือกรูปภาพ
+                        </div>
+                        <img id="imagePreview" class="image-preview" style="display:none;" alt="Preview">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full" id="submitBtn">
+                    <span class="btn-text">💾 บันทึกผลงาน</span>
+                    <span class="btn-loading" style="display:none;">⏳ กำลังอัปโหลด...</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ====== LOGIN MODAL ====== -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal-content login-modal">
+            <button class="modal-close" id="loginModalClose">&times;</button>
+            <div class="login-header">
+                <span class="login-icon">🔐</span>
+                <h2>Admin Login</h2>
+                <p>เข้าสู่ระบบเพื่อจัดการผลงาน</p>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" placeholder="admin@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" placeholder="••••••••" required>
+                </div>
+                <div class="login-error" id="loginError" style="display:none;"></div>
+                <button type="submit" class="btn btn-primary btn-full">🔓 เข้าสู่ระบบ</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ====== SCRIPTS ====== -->
+    <!-- Firebase SDK (v9 compat) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+
+    <!-- App Scripts -->
+    <script src="firebase-config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
