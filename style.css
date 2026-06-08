@@ -164,6 +164,198 @@ button { cursor: pointer; font-family: inherit; }
     transform: rotate(20deg);
 }
 
+/* --- Auth Area --- */
+.nav-auth {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* Login Button */
+.nav-login-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-full);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    transition: all var(--transition);
+    outline: none;
+    padding: 0;
+}
+
+.nav-login-btn:hover {
+    border-color: var(--accent);
+    background: rgba(108, 99, 255, 0.1);
+    color: var(--accent);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(108, 99, 255, 0.15);
+}
+
+.nav-login-btn svg {
+    color: var(--accent);
+    transition: transform var(--transition);
+}
+
+.nav-login-btn:hover svg {
+    transform: scale(1.1);
+}
+
+/* User Area & Button */
+.nav-user-area {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.nav-user-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 42px;
+    padding: 0 14px 0 6px;
+    border: 1px solid var(--border-color);
+    border-radius: 21px;
+    background: var(--bg-card);
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all var(--transition);
+    outline: none;
+}
+
+.nav-user-btn:hover {
+    border-color: var(--accent);
+    background: var(--bg-card-hover);
+}
+
+.nav-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: var(--radius-full);
+    background: var(--accent-gradient);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    box-shadow: 0 2px 8px var(--accent-glow);
+}
+
+.nav-user-email {
+    max-width: 90px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.nav-chevron {
+    color: var(--text-muted);
+    transition: transform var(--transition);
+}
+
+.nav-user-btn:hover .nav-chevron {
+    color: var(--text-secondary);
+}
+
+/* Dropdown Menu */
+.nav-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 240px;
+    background: var(--modal-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all var(--transition);
+    z-index: 1100;
+}
+
+.nav-dropdown.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.dropdown-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-full);
+    background: var(--accent-gradient);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+    box-shadow: 0 3px 10px var(--accent-glow);
+}
+
+.dropdown-name {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.dropdown-email {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    word-break: break-all;
+}
+
+.dropdown-divider {
+    height: 1px;
+    background: var(--border-color);
+    margin: 4px 0;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    border: none;
+    background: transparent;
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-align: left;
+    transition: all var(--transition);
+    width: 100%;
+}
+
+.dropdown-item:hover {
+    background: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+}
+
+.dropdown-item svg {
+    transition: transform var(--transition);
+}
+
+.dropdown-item:hover svg {
+    transform: translateX(2px);
+}
+
 /* Hamburger */
 .hamburger {
     display: none;
@@ -1274,5 +1466,12 @@ footer {
     .btn {
         padding: 11px 20px;
         font-size: 0.85rem;
+    }
+
+    .nav-user-email {
+        display: none;
+    }
+    .nav-user-btn {
+        padding: 0 6px;
     }
 }

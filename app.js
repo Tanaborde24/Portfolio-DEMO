@@ -12,14 +12,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const themeToggle = document.getElementById('themeToggle');
     const themeIcon = document.getElementById('themeIcon');
 
-    // Admin / Auth
-    const secretAdminBtn = document.getElementById('secretAdminBtn');
+    // Admin / Auth / Navbar Auth Elements
     const loginModal = document.getElementById('loginModal');
     const loginModalClose = document.getElementById('loginModalClose');
     const loginForm = document.getElementById('loginForm');
     const loginError = document.getElementById('loginError');
     const adminControls = document.getElementById('adminControls');
-    const logoutBtn = document.getElementById('logoutBtn');
+
+    const navLoginBtn = document.getElementById('navLoginBtn');
+    const navUserArea = document.getElementById('navUserArea');
+    const navUserBtn = document.getElementById('navUserBtn');
+    const navDropdown = document.getElementById('navDropdown');
+    const navAvatar = document.getElementById('navAvatar');
+    const navUserEmail = document.getElementById('navUserEmail');
+    const dropdownAvatar = document.getElementById('dropdownAvatar');
+    const dropdownEmail = document.getElementById('dropdownEmail');
+    const navLogoutBtn = document.getElementById('navLogoutBtn');
 
     // Project Modal
     const addProjectBtn = document.getElementById('addProjectBtn');
@@ -165,58 +173,231 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Close modals on overlay click
     [projectModal, loginModal].forEach(modal => {
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) closeModal(modal);
-        });
+        if (modal) {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeModal(modal);
+            });
+        }
     });
 
     // Close with Escape key
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
-            closeModal(projectModal);
-            closeModal(loginModal);
+            if (projectModal) closeModal(projectModal);
+            if (loginModal) closeModal(loginModal);
         }
     });
 
-    modalClose.addEventListener('click', () => closeModal(projectModal));
-    loginModalClose.addEventListener('click', () => closeModal(loginModal));
+    if (modalClose) modalClose.addEventListener('click', () => closeModal(projectModal));
+    if (loginModalClose) loginModalClose.addEventListener('click', () => closeModal(loginModal));
 
 
     // ============ 7. FIREBASE: AUTH & DATABASE ============
 
-    // --- Secret admin button opens login modal ---
-    secretAdminBtn.addEventListener('click', () => {
-        if (!isFirebaseConfigured) {
-            alert(
-                '⚠️ Firebase ยังไม่ได้ตั้งค่า!\n\n' +
-                'กรุณาแก้ไขไฟล์ firebase-config.js โดยใส่ค่า Config จาก Firebase Console\n' +
-                'ดูวิธีตั้งค่าได้ที่ด้านบนของไฟล์ firebase-config.js'
-            );
-            return;
-        }
-        openModal(loginModal);
-    });
+    // --- Login button in Navbar opens login modal ---
+    if (navLoginBtn) {
+        navLoginBtn.addEventListener('click', () => {
+            if (!isFirebaseConfigured) {
+                console.log('Firebase not configured. Opening login modal in local demo mode.');
+                const noticeId = 'demoLoginNotice';
+                let notice = document.getElementById(noticeId);
+                if (!notice) {
+                    notice = document.createElement('div');
+                    notice.id = noticeId;
+                    notice.style.background = 'rgba(108, 99, 255, 0.1)';
+                    notice.style.border = '1px solid var(--accent)';
+                    notice.style.color = 'var(--accent)';
+                    notice.style.padding = '10px 14px';
+                    notice.style.borderRadius = 'var(--radius-sm)';
+                    notice.style.fontSize = '0.85rem';
+                    notice.style.marginBottom = '16px';
+                    notice.style.textAlign = 'center';
+                    notice.innerHTML = '⚙️ <strong>โหมดทดสอบ (Local Demo)</strong><br>Email: <code>admin@example.com</code><br>Password: <code>admin</code>';
+                    if (loginForm) loginForm.insertBefore(notice, loginForm.firstChild);
+                }
+            }
+            openModal(loginModal);
+        });
+    }
+
+    let auth, db, storage;
 
     if (isFirebaseConfigured) {
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-        const storage = firebase.storage();
-
-        // --- Auth State Listener ---
-        auth.onAuthStateChanged(user => {
-            if (user) {
-                console.log('✅ Logged in as:', user.email);
-                adminControls.style.display = 'flex';
-            } else {
-                console.log('🔒 Not logged in');
-                adminControls.style.display = 'none';
+        auth = firebase.auth();
+        db = firebase.firestore();
+        storage = firebase.storage();
+    } else {
+        console.log("⚠️ Firebase not configured. Initializing Local Mock Services.");
+        auth = {
+            currentUser: localStorage.getItem('mock-auth-logged-in') === 'true' ? { email: 'admin@example.com' } : null,
+            onAuthStateChanged: (callback) => {
+                const loggedIn = localStorage.getItem('mock-auth-logged-in') === 'true';
+                const mockUser = loggedIn ? { email: 'admin@example.com' } : null;
+                callback(mockUser);
+                window.triggerMockAuthStateChanged = (user) => {
+                    auth.currentUser = user;
+                    callback(user);
+                };
+            },
+            signInWithEmailAndPassword: async (email, password) => {
+                if (email === 'admin@example.com' && password === 'admin') {
+                    localStorage.setItem('mock-auth-logged-in', 'true');
+                    if (window.triggerMockAuthStateChanged) {
+                        window.triggerMockAuthStateChanged({ email: 'admin@example.com' });
+                    }
+                    return { user: { email: 'admin@example.com' } };
+                } else {
+                    const err = new Error('Invalid email or password');
+                    err.code = 'auth/invalid-credential';
+                    throw err;
+                }
+            },
+            signOut: async () => {
+                localStorage.removeItem('mock-auth-logged-in');
+                if (window.triggerMockAuthStateChanged) {
+                    window.triggerMockAuthStateChanged(null);
+                }
             }
+        };
+
+        db = {
+            collection: (colName) => {
+                return {
+                    orderBy: () => {
+                        return {
+                            onSnapshot: (callback) => {
+                                const loadFromLocal = () => {
+                                    const data = JSON.parse(localStorage.getItem('mock-projects') || '[]');
+                                    const docs = data.map((item, index) => ({
+                                        id: item.id || `local_${index}`,
+                                        data: () => ({
+                                            name: item.name,
+                                            description: item.description,
+                                            imageUrl: item.imageUrl,
+                                            createdAt: item.createdAt
+                                        })
+                                    }));
+                                    callback({
+                                        empty: docs.length === 0,
+                                        forEach: (docCallback) => docs.forEach(docCallback)
+                                    });
+                                };
+
+                                loadFromLocal();
+                                window.addEventListener('mock-db-updated', loadFromLocal);
+                                return () => {
+                                    window.removeEventListener('mock-db-updated', loadFromLocal);
+                                };
+                            }
+                        };
+                    },
+                    add: async (docData) => {
+                        const data = JSON.parse(localStorage.getItem('mock-projects') || '[]');
+                        docData.id = `local_${Date.now()}`;
+                        data.unshift(docData);
+                        localStorage.setItem('mock-projects', JSON.stringify(data));
+                        window.dispatchEvent(new Event('mock-db-updated'));
+                        return docData;
+                    },
+                    doc: (id) => {
+                        return {
+                            delete: async () => {
+                                const data = JSON.parse(localStorage.getItem('mock-projects') || '[]');
+                                const filtered = data.filter(item => item.id !== id);
+                                localStorage.setItem('mock-projects', JSON.stringify(filtered));
+                                window.dispatchEvent(new Event('mock-db-updated'));
+                            }
+                        };
+                    }
+                };
+            }
+        };
+
+        storage = {
+            ref: () => {
+                return {
+                    put: async (file) => {
+                        return {
+                            ref: {
+                                getDownloadURL: async () => {
+                                    return new Promise((resolve) => {
+                                        const reader = new FileReader();
+                                        reader.onload = (e) => resolve(e.target.result);
+                                        reader.readAsDataURL(file);
+                                    });
+                                }
+                            }
+                        };
+                    }
+                };
+            },
+            refFromURL: () => {
+                return {
+                    delete: async () => { }
+                };
+            }
+        };
+    }
+
+    // --- Dropdown Toggle ---
+    if (navUserBtn && navDropdown) {
+        navUserBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            navDropdown.classList.toggle('active');
         });
 
-        // --- Login Form ---
+        // Close dropdown when clicking outside
+        document.addEventListener('click', () => {
+            navDropdown.classList.remove('active');
+        });
+
+        // Prevent dropdown closure when clicking inside it
+        navDropdown.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    }
+
+    // --- Auth State Listener ---
+    auth.onAuthStateChanged(user => {
+        if (user) {
+            console.log('✅ Logged in as:', user.email);
+
+            // Show user area, hide login button
+            if (navLoginBtn) navLoginBtn.style.display = 'none';
+            if (navUserArea) navUserArea.style.display = 'flex';
+
+            // Set user email and avatar text
+            const emailParts = user.email.split('@');
+            const displayName = emailParts[0];
+            const initial = displayName.charAt(0).toUpperCase();
+
+            if (navUserEmail) navUserEmail.textContent = displayName;
+            if (navAvatar) navAvatar.textContent = initial;
+            if (dropdownAvatar) dropdownAvatar.textContent = initial;
+            if (dropdownEmail) dropdownEmail.textContent = user.email;
+
+            // Show admin controls
+            if (adminControls) adminControls.style.display = 'flex';
+        } else {
+            console.log('🔒 Not logged in');
+
+            // Show login button, hide user area
+            if (navLoginBtn) navLoginBtn.style.display = 'flex';
+            if (navUserArea) navUserArea.style.display = 'none';
+
+            // Hide admin controls
+            if (adminControls) adminControls.style.display = 'none';
+
+            // Ensure dropdown is closed
+            if (navDropdown) navDropdown.classList.remove('active');
+        }
+    });
+
+    // --- Login Form ---
+    if (loginForm) {
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            loginError.style.display = 'none';
+            if (loginError) loginError.style.display = 'none';
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
 
@@ -225,36 +406,48 @@ document.addEventListener('DOMContentLoaded', () => {
                 closeModal(loginModal);
                 loginForm.reset();
             } catch (error) {
-                loginError.textContent = getAuthErrorMessage(error.code);
-                loginError.style.display = 'block';
+                if (loginError) {
+                    loginError.textContent = getAuthErrorMessage(error.code);
+                    loginError.style.display = 'block';
+                }
             }
         });
+    }
 
-        // --- Logout ---
-        logoutBtn.addEventListener('click', async () => {
+    // --- Logout ---
+    if (navLogoutBtn) {
+        navLogoutBtn.addEventListener('click', async () => {
             await auth.signOut();
         });
+    }
 
-        // --- Add Project Button ---
+    // --- Add Project Button ---
+    if (addProjectBtn) {
         addProjectBtn.addEventListener('click', () => {
             openModal(projectModal);
         });
+    }
 
-        // --- Image Preview ---
+    // --- Image Preview ---
+    if (projectImage) {
         projectImage.addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (file) {
-                fileLabel.innerHTML = `<span>📁</span> ${file.name}`;
+                if (fileLabel) fileLabel.innerHTML = `<span>📁</span> ${file.name}`;
                 const reader = new FileReader();
                 reader.onload = (ev) => {
-                    imagePreview.src = ev.target.result;
-                    imagePreview.style.display = 'block';
+                    if (imagePreview) {
+                        imagePreview.src = ev.target.result;
+                        imagePreview.style.display = 'block';
+                    }
                 };
                 reader.readAsDataURL(file);
             }
         });
+    }
 
-        // --- Submit New Project ---
+    // --- Submit New Project ---
+    if (projectForm) {
         projectForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
@@ -270,29 +463,34 @@ document.addEventListener('DOMContentLoaded', () => {
             // Show loading state
             const btnText = submitBtn.querySelector('.btn-text');
             const btnLoading = submitBtn.querySelector('.btn-loading');
-            btnText.style.display = 'none';
-            btnLoading.style.display = 'inline';
+            if (btnText) btnText.style.display = 'none';
+            if (btnLoading) btnLoading.style.display = 'inline';
             submitBtn.disabled = true;
 
             try {
-                // 1. Upload image to Firebase Storage
+                // 1. Upload image to Storage
                 const timestamp = Date.now();
                 const storageRef = storage.ref(`projects/${timestamp}_${file.name}`);
                 const uploadTask = await storageRef.put(file);
                 const imageUrl = await uploadTask.ref.getDownloadURL();
 
                 // 2. Save project data to Firestore
-                await db.collection('projects').add({
+                const projectData = {
                     name: name,
                     description: desc,
-                    imageUrl: imageUrl,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
+                    imageUrl: imageUrl
+                };
+                if (isFirebaseConfigured) {
+                    projectData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+                } else {
+                    projectData.createdAt = new Date().toISOString();
+                }
+                await db.collection('projects').add(projectData);
 
                 // 3. Reset form & close modal
                 projectForm.reset();
-                imagePreview.style.display = 'none';
-                fileLabel.innerHTML = '<span>📁</span> เลือกรูปภาพ';
+                if (imagePreview) imagePreview.style.display = 'none';
+                if (fileLabel) fileLabel.innerHTML = '<span>📁</span> เลือกรูปภาพ';
                 closeModal(projectModal);
                 alert('✅ เพิ่มผลงานสำเร็จ!');
 
@@ -300,105 +498,100 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error('Error adding project:', error);
                 alert('❌ เกิดข้อผิดพลาด: ' + error.message);
             } finally {
-                btnText.style.display = 'inline';
-                btnLoading.style.display = 'none';
+                if (btnText) btnText.style.display = 'inline';
+                if (btnLoading) btnLoading.style.display = 'none';
                 submitBtn.disabled = false;
             }
         });
+    }
 
-        // --- Load Projects from Firestore (Real-time) ---
-        function loadProjects() {
-            db.collection('projects')
-                .orderBy('createdAt', 'desc')
-                .onSnapshot((snapshot) => {
-                    // Hide loading
-                    loadingProjects.style.display = 'none';
+    // --- Load Projects from Firestore (Real-time) ---
+    function loadProjects() {
+        db.collection('projects')
+            .orderBy('createdAt', 'desc')
+            .onSnapshot((snapshot) => {
+                // Hide loading
+                if (loadingProjects) loadingProjects.style.display = 'none';
 
-                    // Remove old Firebase project cards (keep loading div)
+                // Remove old Firebase project cards (keep loading div)
+                if (projectsGrid) {
                     const existingCards = projectsGrid.querySelectorAll('.project-card');
                     existingCards.forEach(card => card.remove());
+                }
 
-                    if (snapshot.empty) {
-                        // Show static projects if no Firebase data
-                        staticProjects.style.display = 'grid';
-                        return;
-                    }
+                if (snapshot.empty) {
+                    if (staticProjects) staticProjects.style.display = 'grid';
+                    return;
+                }
 
-                    // Hide static projects
-                    staticProjects.style.display = 'none';
+                if (staticProjects) staticProjects.style.display = 'none';
 
-                    snapshot.forEach(doc => {
-                        const data = doc.data();
-                        const card = createProjectCard(doc.id, data);
-                        projectsGrid.appendChild(card);
-                    });
-
-                    // Re-apply scroll animations to new cards
-                    setupScrollAnimations();
-                }, (error) => {
-                    console.error('Error loading projects:', error);
-                    loadingProjects.style.display = 'none';
-                    staticProjects.style.display = 'grid';
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const card = createProjectCard(doc.id, data);
+                    if (projectsGrid) projectsGrid.appendChild(card);
                 });
-        }
 
-        // --- Create Project Card Element ---
-        function createProjectCard(id, data) {
-            const card = document.createElement('div');
-            card.className = 'project-card';
-            card.innerHTML = `
-                <div class="project-image">
-                    <img src="${data.imageUrl}" alt="${escapeHtml(data.name)}" loading="lazy">
-                    <div class="project-overlay">
-                        <span class="overlay-icon">🔍</span>
-                    </div>
-                </div>
-                <div class="project-info">
-                    <h3>${escapeHtml(data.name)}</h3>
-                    <p>${escapeHtml(data.description)}</p>
-                </div>
-            `;
-
-            // Add delete button if admin is logged in
-            if (auth.currentUser) {
-                const deleteBtn = document.createElement('button');
-                deleteBtn.className = 'project-delete-btn';
-                deleteBtn.innerHTML = '🗑️';
-                deleteBtn.title = 'ลบผลงานนี้';
-                deleteBtn.addEventListener('click', async (e) => {
-                    e.stopPropagation();
-                    if (confirm('⚠️ คุณต้องการลบผลงานนี้หรือไม่?')) {
-                        try {
-                            // Delete image from Storage
-                            if (data.imageUrl) {
-                                try {
-                                    const imageRef = storage.refFromURL(data.imageUrl);
-                                    await imageRef.delete();
-                                } catch (storageErr) {
-                                    console.warn('Could not delete image:', storageErr);
-                                }
-                            }
-                            // Delete document from Firestore
-                            await db.collection('projects').doc(id).delete();
-                        } catch (error) {
-                            alert('❌ ลบไม่สำเร็จ: ' + error.message);
-                        }
-                    }
-                });
-                card.appendChild(deleteBtn);
-            }
-
-            return card;
-        }
-
-        // Start loading projects
-        loadProjects();
-
-    } else {
-        // Firebase not configured — show static projects
-        loadingProjects.style.display = 'none';
-        staticProjects.style.display = 'grid';
+                // Re-apply scroll animations to new cards
+                setupScrollAnimations();
+            }, (error) => {
+                console.error('Error loading projects:', error);
+                if (loadingProjects) loadingProjects.style.display = 'none';
+                if (staticProjects) staticProjects.style.display = 'grid';
+            });
     }
+
+    // --- Create Project Card Element ---
+    function createProjectCard(id, data) {
+        const card = document.createElement('div');
+        card.className = 'project-card';
+        card.innerHTML = `
+            <div class="project-image">
+                <img src="${data.imageUrl}" alt="${escapeHtml(data.name)}" loading="lazy">
+                <div class="project-overlay">
+                    <span class="overlay-icon">🔍</span>
+                </div>
+            </div>
+            <div class="project-info">
+                <h3>${escapeHtml(data.name)}</h3>
+                <p>${escapeHtml(data.description)}</p>
+            </div>
+        `;
+
+        // Add delete button if admin is logged in
+        if (auth.currentUser) {
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'project-delete-btn';
+            deleteBtn.innerHTML = '🗑️';
+            deleteBtn.title = 'ลบผลงานนี้';
+            deleteBtn.addEventListener('click', async (e) => {
+                e.stopPropagation();
+                if (confirm('⚠️ คุณต้องการลบผลงานนี้หรือไม่?')) {
+                    try {
+                        // Delete image from Storage
+                        if (data.imageUrl && isFirebaseConfigured) {
+                            try {
+                                const imageRef = storage.refFromURL(data.imageUrl);
+                                await imageRef.delete();
+                            } catch (storageErr) {
+                                console.warn('Could not delete image:', storageErr);
+                            }
+                        }
+                        // Delete document from Firestore
+                        await db.collection('projects').doc(id).delete();
+                    } catch (error) {
+                        alert('❌ ลบไม่สำเร็จ: ' + error.message);
+                    }
+                }
+            });
+            card.appendChild(deleteBtn);
+        }
+
+        return card;
+    }
+
+    // Start loading projects
+    loadProjects();
 
 
     // ============ 8. UTILITY FUNCTIONS ============
