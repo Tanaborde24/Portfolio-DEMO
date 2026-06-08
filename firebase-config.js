@@ -1,5 +1,13 @@
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+// ============================================
+// Firebase Configuration — firebase-config.js
+// ============================================
+// ใช้ร่วมกับ Firebase CDN (compat mode) ที่โหลดใน index.html
+//
+// วิธีตั้งค่า:
+// 1. ไปที่ Firebase Console -> Project Settings
+// 2. คัดลอกค่า Config มาวางแทนค่าด้านล่าง
+// 3. เปิดใช้งาน Authentication, Firestore, Storage ใน Firebase Console
+// ============================================
 
 const firebaseConfig = {
     apiKey: "AIzaSyBbejxg9D7SJtynVJY-V39upIOSAYTjW8Q",
@@ -11,12 +19,12 @@ const firebaseConfig = {
     measurementId: "G-V78ZSK5RY2"
 };
 
-
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-
-// ตรวจสอบว่าได้ตั้งค่าแล้วหรือยัง
-const isFirebaseConfigured = firebaseConfig.apiKey !== "AIzaSyBbejxg9D7SJtynVJY-V39upIOSAYTjW8Q";
+// ตรวจสอบว่า Firebase SDK โหลดมาแล้วหรือยัง และค่า config ถูกตั้งค่าแล้วหรือยัง
+const isFirebaseConfigured = (
+    typeof firebase !== 'undefined' &&
+    firebaseConfig.apiKey &&
+    firebaseConfig.apiKey !== 'YOUR_API_KEY'
+);
 
 if (isFirebaseConfigured) {
     // Initialize Firebase
@@ -24,8 +32,7 @@ if (isFirebaseConfigured) {
     console.log("✅ Firebase initialized successfully!");
 } else {
     console.warn(
-        "⚠️ Firebase ยังไม่ได้ตั้งค่า!\n" +
-        "กรุณาแก้ไขไฟล์ firebase-config.js โดยใส่ค่า Config จาก Firebase Console\n" +
-        "ดูวิธีตั้งค่าได้ที่ด้านบนของไฟล์นี้"
+        "⚠️ Firebase ยังไม่ได้ตั้งค่า หรือ SDK ยังไม่โหลด\n" +
+        "ระบบจะทำงานในโหมดทดสอบ (Local Demo Mode)"
     );
 }
