@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Animate elements on scroll (IntersectionObserver)
     function setupScrollAnimations() {
         const animTargets = document.querySelectorAll(
-            '.skill-card, .soft-skill-card, .language-card, .timeline-card, .project-card, .contact-card'
+            '.skills-card, .timeline-card, .project-card, .contact-card'
         );
 
         animTargets.forEach(el => el.classList.add('animate-on-scroll'));
